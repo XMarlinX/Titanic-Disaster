@@ -1,0 +1,60 @@
+---
+title: 'The Titanic Disaster: Survival Rates by Group'
+author: "Marlin Thomas"
+date: "`r Sys.Date()`"
+output:
+  ioslides_presentation: default
+  powerpoint_presentation: default
+---
+<body style="background-color:grey;">
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+
+```
+
+
+## Overview
+The sinking of HMS Titanic was one of the great tragedies of the twentieth century. Using open source data that records for each passenger his/her cabin class, gender, age, and whether or not she/he survived, this study compares survival rates for first, second, and third class passengers, for males versus females, and for adults versus children. The comparison reveals striking, but expected, differences in survival rates among different demographic groups.
+
+
+
+## Sample Code for Calculating Survival Rate
+
+```{r echo = TRUE}
+library(readxl)
+TitanicData <- read_excel("TitanicData.xls")
+names(TitanicData) <- c("Passenger Class", "Survived", "Gender", "Age")
+#Survivors by Class
+Class1Survived <- sum(TitanicData$`Passenger Class` == 1 & TitanicData$Survived==1)
+Class1SurvivalRate = round ((Class1Survived / sum(TitanicData$`Passenger Class` == 1)), digits =2 )
+
+Class2Survived <- sum(TitanicData$`Passenger Class` == 2 & TitanicData$`Survived`==1)
+Class2SurvivalRate = round ((Class2Survived / sum(TitanicData$`Passenger Class` == 2)), digits =2)
+
+Class3Survived <- sum(TitanicData$`Passenger Class` == 3 & TitanicData$`Survived`==1 , na.rm=TRUE)
+Class3SurvivalRate <- round ((Class3SurvivalRate = Class3Survived / sum(TitanicData$`Passenger Class` == 3)), digits =2 )
+
+
+
+print ( c ("Passenger Class", "Percentage Survived"))
+
+print ( c ("First Class", Class1SurvivalRate))
+print ( c ("SecondClass", Class2SurvivalRate))
+print ( c ("Third Class", Class3SurvivalRate))
+
+```
+## Plot of Comparative Survival Rates by Passenger Class
+
+```{r}
+Data <- c (Class1SurvivalRate, Class2SurvivalRate, Class3SurvivalRate)
+barplot (height = Data, names = c ("First Class", "Second Class", "Third Class"))
+?barplot
+```
+
+
+## Conclusions
+
+- Survival rates correlate with passenger class
+- Passengers in first class survived at a rate more than double that of passengers in third class
+- Passengers in second class survived at a rate nearly twice that of passengers in third class
